@@ -3,12 +3,11 @@ using System.Linq.Expressions;
 
 namespace PharmacyDispensaryV1.Infrastructure.Abstraction.Imp
 {
-    public class Repository<T>(DbContext context, ILogger<Repository<T>> logger) : IRepository<T> where T : class
+    public class Repository<T>(DbContext context) : IRepository<T> where T : class
     {
-        private readonly DbSet<T> _dbSet = context.Set<T>();
-
         protected readonly DbContext context = context;
-        protected ILogger<Repository<T>> logger = logger;
+
+        private readonly DbSet<T> _dbSet = context.Set<T>();
 
         public async Task Add(T entity)
         {

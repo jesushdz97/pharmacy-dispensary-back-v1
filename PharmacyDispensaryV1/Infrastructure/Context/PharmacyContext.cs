@@ -7,7 +7,7 @@ namespace PharmacyDispensaryV1.Infrastructure.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-NTEH84R\\SQLEXPRESS;Database=Pharmacy;User Id=sa;Password=Aa12345;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-NTEH84R\\SQLEXPRESS;Database=Pharmacy;User Id=sa;Password=Aa12345;TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 

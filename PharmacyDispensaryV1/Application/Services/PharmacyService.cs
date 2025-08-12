@@ -14,7 +14,7 @@ namespace PharmacyDispensaryV1.Application.Services
 
         public async Task Delete(int id)
         {
-            var entity = await _uow.Pharmacy.Get(x => x.TestId == id, tracking: true) ?? throw new Exception();
+            var entity = await _uow.Pharmacy.Get(x => x.PharmacyId == id, tracking: true) ?? throw new Exception();
             entity.IsActive = false;
             await _uow.Commit();
         }

@@ -1,14 +1,14 @@
 ﻿using PharmacyDispensaryV1.Data.Entities;
 using PharmacyDispensaryV1.Infrastructure.Abstraction;
-using PharmacyDispensaryV1.Infrastructure.Context;
+using PharmacyDispensaryV1.Infrastructure.Database.Context;
 
 namespace PharmacyDispensaryV1.Infrastructure
 {
-    public class UnitOfWork(PharmacyContext context, PharmacyRepository pharmacy) : IUnitOfWork
+    public class UnitOfWork(SqlDbContext context, PharmacyRepository pharmacy) : IUnitOfWork
     {
         public IRepository<Pharmacy> Pharmacy { get; } = pharmacy;
 
-        private readonly PharmacyContext _context = context;
+        private readonly SqlDbContext _context = context;
 
         public Task<int> Commit() => _context.SaveChangesAsync();
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PharmacyDispensaryV1.Application;
+using PharmacyDispensaryV1.Data.Dto.Request;
 using PharmacyDispensaryV1.Data.Entities;
+using PharmacyDispensaryV1.Data.Mappers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,8 +30,10 @@ namespace PharmacyDispensaryV1.Controllers
 
         // POST api/<PharmacyController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task Post([FromBody] PharmacyRequest request)
         {
+            var pharmacy = request.ToPharmacy();
+            await _pharmacyService.Save(pharmacy);
         }
 
         // PUT api/<PharmacyController>/5

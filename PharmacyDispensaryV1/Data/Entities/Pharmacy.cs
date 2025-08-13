@@ -8,9 +8,9 @@ namespace PharmacyDispensaryV1.Data.Entities
     {
         [Key]
         public long PharmacyId { get; set; }
-        public required string Name { get; set; }
+        [MaxLength(100)] public required string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

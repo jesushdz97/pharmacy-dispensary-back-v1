@@ -30,16 +30,18 @@ namespace PharmacyDispensaryV1.Controllers
 
         // POST api/<PharmacyController>
         [HttpPost]
-        public async Task Post([FromBody] PharmacyRequest request)
+        public async Task Post([FromBody] PharmacyCreate request)
         {
-            var pharmacy = request.ToPharmacy();
+            var pharmacy = request.ToPharmacyCreate();
             await _pharmacyService.Save(pharmacy);
         }
 
         // PUT api/<PharmacyController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public void Put([FromBody] PharmacyUpdate request)
         {
+            var pharmacy = request.ToPharmacyUpdate();
+            _pharmacyService.Update(pharmacy);
         }
 
         // DELETE api/<PharmacyController>/5

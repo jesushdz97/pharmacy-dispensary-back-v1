@@ -5,10 +5,19 @@ namespace PharmacyDispensaryV1.Data.Mappers
 {
     public static class PharmacyMappingExtensions
     {
-        public static Pharmacy ToPharmacy(this PharmacyRequest request)
+        public static Pharmacy ToPharmacyCreate(this PharmacyCreate request)
         {
             return new Pharmacy
             {
+                Name = request.Name,
+            };
+        }
+
+        public static Pharmacy ToPharmacyUpdate(this PharmacyUpdate request)
+        {
+            return new Pharmacy
+            {
+                PharmacyId = request.PharmacyId,
                 Name = request.Name,
             };
         }

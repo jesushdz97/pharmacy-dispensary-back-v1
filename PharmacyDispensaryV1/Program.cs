@@ -6,7 +6,6 @@ using PharmacyDispensaryV1.Infrastructure.Abstraction;
 using PharmacyDispensaryV1.Infrastructure.Database.Context;
 using PharmacyDispensaryV1.Infrastructure.Database.Interceptors;
 using Serilog;
-using PharmacyDispensaryV1.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConection");

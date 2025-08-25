@@ -5,38 +5,58 @@ using PharmacyDispensaryV1.Infrastructure;
 using PharmacyDispensaryV1.Infrastructure.Abstraction;
 using PharmacyDispensaryV1.Infrastructure.Database.Context;
 using PharmacyDispensaryV1.Infrastructure.Database.Interceptors;
+using PharmacyDispensaryV1.Infrastructure.Middleware;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConection");
 
-builder
-    .Configuration
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+            .Build();
 
-builder.Services.AddSingleton<TimeStampInterceptor>();
-builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(connectionString));
+Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
 
-builder.Services.AddScoped<PharmacyRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IPharmacyService, PharmacyService>();
-
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-
-builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var builder = WebApplication.CreateBuilder(args);
 
-app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+    builder.Services.AddSingleton<TimeStampInterceptor>();
+    builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection")));
+
+    builder.Services.AddScoped<PharmacyRepository>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    builder.Services.AddScoped<IPharmacyService, PharmacyService>();
+
+    builder.Services.AddTransient<HttpLoggingMiddleware>();
+
+    builder.Services.AddControllers();
+    builder.Services.AddSwaggerGen();
+    builder.Host.UseSerilog();
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseMiddleware<HttpLoggingMiddleware>();
+    //app.UseSerilogRequestLogging();
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.MapControllers();
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

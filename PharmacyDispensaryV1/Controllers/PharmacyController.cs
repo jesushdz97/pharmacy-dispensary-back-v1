@@ -10,9 +10,19 @@ namespace PharmacyDispensaryV1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PharmacyController(IPharmacyService pharmacyService) : ControllerBase
+    public class PharmacyController(IPharmacyService pharmacyService, ILogger<PharmacyController> logger) : ControllerBase
     {
         private readonly IPharmacyService _pharmacyService = pharmacyService;
+
+
+        // GET: api/<PharmacyController>
+        [HttpGet("test")]
+        public ActionResult Test()
+        {
+            logger.LogInformation("TEST");
+            return Ok();
+        }
+
 
         // GET: api/<PharmacyController>
         [HttpGet]
@@ -30,10 +40,11 @@ namespace PharmacyDispensaryV1.Controllers
 
         // POST api/<PharmacyController>
         [HttpPost]
-        public async Task Post([FromBody] PharmacyCreate request)
+        public async Task<Pharmacy> Post([FromBody] PharmacyCreate request)
         {
             var pharmacy = request.ToPharmacyCreate();
             await _pharmacyService.Save(pharmacy);
+            return pharmacy;
         }
 
         // PUT api/<PharmacyController>/5

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace PharmacyDispensaryV1.Infrastructure.Abstraction
+namespace PharmacyDispensaryV1.Data.Abstraction
 {
     public interface IRepository<T> where T : class
     {

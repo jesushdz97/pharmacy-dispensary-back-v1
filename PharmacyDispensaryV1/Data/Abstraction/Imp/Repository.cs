@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmacyDispensaryV1.Data.Abstraction;
 using System.Linq.Expressions;
 
-namespace PharmacyDispensaryV1.Infrastructure.Abstraction.Imp
+namespace PharmacyDispensaryV1.Data.Abstraction.Imp
 {
     public class Repository<T>(DbContext context) : IRepository<T> where T : class
     {

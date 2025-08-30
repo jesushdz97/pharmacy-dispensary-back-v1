@@ -1,11 +1,10 @@
-﻿using PharmacyDispensaryV1.Data.Entities;
-using PharmacyDispensaryV1.Infrastructure.Abstraction;
+﻿using PharmacyDispensaryV1.Data.User.Repositories;
 
 namespace PharmacyDispensaryV1.Infrastructure
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IRepository<Pharmacy> Pharmacy { get; }
+        public IUserRepository Users { get; }
         Task<int> Commit();
     }
 }

@@ -1,21 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PharmacyDispensaryV1.Data.Entities;
+using PharmacyDispensaryV1.Data.User;
 using PharmacyDispensaryV1.Infrastructure.Database.Interceptors;
+using PharmacyDispensaryV1.Infrastructure.Seeders;
 
 namespace PharmacyDispensaryV1.Infrastructure.Database.Context
 {
-    public class SqlDbContext(DbContextOptions options) : DbContext(options)
+    public class SqlDbContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(ConnectionStringFactoryUtil.GetConnectionString());
             optionsBuilder.AddInterceptors(new TimeStampInterceptor());
-            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UserSeeder());
             ApplyAuditAndActiveDefaults(modelBuilder);
-            base.OnModelCreating(modelBuilder);
         }
 
         private static void ApplyAuditAndActiveDefaults(ModelBuilder modelBuilder)
@@ -45,6 +46,6 @@ namespace PharmacyDispensaryV1.Infrastructure.Database.Context
             }
         }
 
-        public DbSet<Pharmacy> Pharmacy { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

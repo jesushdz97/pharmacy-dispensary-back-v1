@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Dto\Response\" />
-    <Folder Include="Infrastructure\Repositories\" />
+    <Folder Include="Data\User\Dto\Response\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

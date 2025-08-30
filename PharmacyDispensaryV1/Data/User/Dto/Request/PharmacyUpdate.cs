@@ -1,4 +1,4 @@
-﻿namespace PharmacyDispensaryV1.Data.Dto.Request
+﻿namespace PharmacyDispensaryV1.Data.User.Dto.Request
 {
     public class PharmacyUpdate
     {
